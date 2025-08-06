@@ -36,3 +36,10 @@ def run_query(query: QueryInput):
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+# main.py
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run("main:app", host="0.0.0.0", port=int(os.environ.get("PORT", 8000)))
+
