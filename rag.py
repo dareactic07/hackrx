@@ -1,13 +1,14 @@
 # rag.py
+
 import requests
 import fitz  # PyMuPDF
 import time
 import os
 from dotenv import load_dotenv
-from langchain.schema import Document
-from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain.vectorstores import FAISS
-from langchain.embeddings import HuggingFaceEmbeddings
+from langchain_core.documents import Document
+from langchain_text_splitters import RecursiveCharacterTextSplitter
+from langchain_community.vectorstores import FAISS
+from langchain_community.embeddings import HuggingFaceEmbeddings
 from langchain.chains import RetrievalQA
 from langchain_groq import ChatGroq
 
@@ -16,7 +17,7 @@ load_dotenv()
 embedding_model_name = "intfloat/e5-small-v2"
 embeddings = HuggingFaceEmbeddings(
     model_name=embedding_model_name,
-    model_kwargs={"device": "cpu"},  # set to "cuda" if GPU is available
+    model_kwargs={"device": "cpu"},
     encode_kwargs={"normalize_embeddings": True}
 )
 
@@ -40,7 +41,6 @@ def load_and_split_pdf(pdf_url):
     docs = []
     for i, page in enumerate(doc):
         text = page.get_text()
-        # Prepend 'passage:' for E5 model (improves quality)
         docs.append(Document(page_content=f"passage: {text}", metadata={"page": i + 1}))
 
     splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=50)
