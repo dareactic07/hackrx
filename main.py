@@ -1,9 +1,8 @@
-# main.py
-
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from typing import List
 import time
+import os  # <-- You missed this import
 
 from rag import load_and_split_pdf, create_vectorstore, build_qa_chain, get_answers
 
@@ -16,6 +15,10 @@ class QueryInput(BaseModel):
 class QueryOutput(BaseModel):
     answers: List[dict]
     total_execution_time_seconds: float
+
+@app.get("/healthz")
+def health_check():
+    return {"status": "ok"}
 
 @app.post("/api/v1/hackrx/run", response_model=QueryOutput)
 def run_query(query: QueryInput):
@@ -37,9 +40,6 @@ def run_query(query: QueryInput):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-# main.py
-
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run("main:app", host="0.0.0.0", port=int(os.environ.get("PORT", 8000)))
-
