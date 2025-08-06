@@ -1,10 +1,9 @@
 fastapi
 uvicorn
-requests
 python-dotenv
+requests
+pypdf
 langchain
-langchain-community
-langchain-groq
-huggingface-hub
+sentence-transformers
 faiss-cpu
-PyMuPDF
+huggingface-hub
