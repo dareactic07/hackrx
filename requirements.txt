@@ -1,0 +1,10 @@
+fastapi
+uvicorn
+requests
+python-dotenv
+langchain
+langchain-community
+langchain-groq
+huggingface-hub
+faiss-cpu
+PyMuPDF
